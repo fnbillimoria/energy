@@ -1,0 +1,19 @@
+Type,Inertia Constant (s)
+Transmission Line,0
+Load,2
+Other,0
+"Landfill, Biogas",2
+Open Cycle Gas turbines (OCGT),5
+Combined Cycle Gas Turbine (CCGT),5
+Compression Reciprocating Engine,0
+Hydro - Gravity,5
+Hydro - pump storage,5
+Photovoltaic Flat Panel,0
+PV - Panels,0
+Run of River,5
+Spark Ignition,0
+Spark Ignition Reciprocating Engine,0
+Steam Sub-Critical,6
+Steam - Super heated,6
+Steam Super Critical,6
+Wind - Onshore,0
