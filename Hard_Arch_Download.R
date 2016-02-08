@@ -22,23 +22,23 @@ Download_Arch <- function(baseurl,archurl,gendata) {
   Arch_links <- xpathSApply(Arch_parsed,"//@href")
   Arch_links <- paste(baseurl,Arch_links,sep="")
   Last <- length(Arch_links)
+  Arch_links <- Arch_links[2:Last]
   First_link <- Arch_links[1]
-  Last_link <- Arch_links[Last]
-  dtf <- strsplit(First_link,"_")
-  dtf <- as.POSIXct(strptime(dtf[3],"%Y%m%d%H%M"))
-  dtl <- strsplit(Last_link,"_")
-  dtl <- as.POSIXct(strptime(dtl[3],"%Y%m%d%H%M"))
+  Last_link <- Arch_links[Last-1]
+  dtf <- str_extract(First_link,"([[:digit:]]{8})")
+  dtf <- as.POSIXct(strptime(dtf,"%Y%m%d"))
+  dtl <- str_extract(Last_link,"([[:digit:]]{8})")
+  dtl <- as.POSIXct(strptime(dtl,"%Y%m%d"))
   
   Archive_data <- {data.frame(datetime=character(),DUID=character(),
                                MW=numeric(),State=numeric(),
                                Inertia=numeric(),Region=character())}
-  
+
   for(i in Arch_links) {
     download.file(i,"temparch.zip")
     ziplist <- unzip("temparch.zip")
     for (j in ziplist) {
-            tempzip <- unzip(j)
-            templist <- download.file(tempzip)
+            templist <- unzip(j)
             Arch_file <- read.csv(templist,skip=2,header=F)
             unlink(templist)
             Arch_file <- subset(Arch_file,select=V5:V7)
@@ -52,20 +52,21 @@ Download_Arch <- function(baseurl,archurl,gendata) {
               index <- match(Arch_file$DUID[i],gendata$DUIDUn,nomatch = "NA")
               Arch_file$Inertia[i] <- gendata$Inertia[index]*Arch_file$State[i]
               Arch_file$Region[i] <- as.character(gendata$Region[index])
-              {if(Arch_file$Region[i] == "NSW1" ||
-                  Arch_file$Region[i] == "QLD1" ||
-                  Arch_file$Region[i] == "VIC1" ) Arch_file$Region[i] <- "NEM1"
-              }
-            Arch_file$Technology[i] <- as.character(gendata$Technology.Descriptor[index])
-            Arch_file$Participant[i] <- as.character(gendata$Participant[index])
+             Arch_file$Technology[i] <- as.character(gendata$Technology.Descriptor[index])
+             Arch_file$Participant[i] <- as.character(gendata$Participant[index])
             }
     
     Archive_data <- rbind(Archive_data,na.omit(Arch_file))
     
-      }
-      }
+         }
+  unlink(ziplist)  
+    
+  }
   
-  
+  write.csv(Archive_data,file="ArchiveInertia.csv")
+  write.csv(c(dtf,dtl),file="archdates.csv")
   return(Archive_data)  
 
-  }
+}
+
+Download_Arch(Nem_base_url,Arch_url,Gendata)

@@ -17,6 +17,10 @@ Gendata <- read.csv("NEMData.csv")
 # Downloads latest and last 24 hours of SCADA from NEM website in correct format
 
 Curr_file1 <- Download_Curr(Nem_base_url,Curr_url,Gendata)
+Curr_region <-  aggregate(Inertia ~  Region,data=Last_day_data,sum)
+Curr_tech <-  aggregate(Inertia ~ datetime + Technology.Descriptor,data=Last_day_data,sum)
+Last_day_part <-  aggregate(Inertia ~ datetime + Participant,data=Last_day_data,sum)
+
 
 Last_day_file <- Download_Last_Day(Nem_base_url,Curr_url,Gendata)
 Last_day_region <-  aggregate(Inertia ~ datetime + Region,data=Last_day_data,sum)
@@ -26,6 +30,7 @@ remove(Last_day_file)
 
 # Output 1: Current Inertia Gauge
 
+Curr_file1
 
 
 

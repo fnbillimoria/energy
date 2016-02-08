@@ -32,6 +32,7 @@ Download_Curr <- function(baseurl,currurl,gendata) {
             Curr_file$Region[i] <- as.character(gendata$Region[index])
                     {if(Curr_file$Region[i] == "NSW1" ||
                         Curr_file$Region[i] == "QLD1" ||
+                        Curr_file$Region[i] == "SA1" ||
                         Curr_file$Region[i] == "VIC1" ) Curr_file$Region[i] <- "NEM1"
                     }
             Curr_file$Technology[i] <- as.character(gendata$Technology.Descriptor[index])
@@ -75,6 +76,7 @@ Download_Last_Day <- function(baseurl,currurl,gendata) {
               Curr_file$Region[i] <- as.character(gendata$Region[index])
                       {if(Curr_file$Region[i] == "NSW1" ||
                           Curr_file$Region[i] == "QLD1" ||
+                          Curr_file$Region[i] == "SA1" ||
                           Curr_file$Region[i] == "VIC1" ) Curr_file$Region[i] <- "NEM1"
                       }
               Curr_file$Technology[i] <- as.character(gendata$Technology.Descriptor[index])
